@@ -12,54 +12,85 @@ import java.util.List;
 
 @SpringBootApplication
 public class JpaProgrammingApplication {
+    //엔티티 매니저 팩토리-생성
+    static EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
 
     public static void main(String[] args) {
-        //엔티티 매니저 팩토리-생성
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
 
-        //엔티티 매니저-생성
-        EntityManager em = emf.createEntityManager();
+        Member member = createMember("memberA", "회원1");
 
-        //트랜잭션-획득
-        EntityTransaction tx = em.getTransaction();
+        member.setUsername("회원명변경"); //준영속 상태일 때 변경
 
-        try {
-            tx.begin();
-            logic(em);
-            tx.commit();
-        } catch (Exception e) {
-            tx.rollback();
-        }finally {
-            em.close();
-        }
-        emf.close();
+        mergeMember(member);
     }
 
-    private static void logic(EntityManager entityManager) {
+    private static Member createMember(String id, String username) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
 
-        String id = "id1";
         Member member = new Member();
         member.setId(id);
-        member.setUsername("선재");
-        member.setAge(2);
+        member.setUsername(username);
 
-        //등록
-        entityManager.persist(member);
+        em.persist(member);
+        tx.commit();
 
-        //수정
-        member.setAge(20);
+        em.close();
 
-        //한 건 조회
-        Member findMember = entityManager.find(Member.class, id);
-        System.out.println("findMember = " + findMember.getUsername()+", age="+findMember.getAge());
+        return member;
+    }
 
-        //목록 조회
-        List<Member> members = entityManager.createQuery("select m from Member m", Member.class).getResultList();
-        System.out.println(members.size());
+    private static void mergeMember(Member member) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
 
-        //삭제
-        entityManager.remove(member);
+        //Member mergeMember = em.merge(member);
+        member = em.merge(member);
+        tx.commit();
+
+        //준영속 상태
+        System.out.println(member.getUsername());
+
+        //영속 상태
+//        System.out.println(mergeMember.getUsername());
+
+        System.out.println(em.contains(member));
+
+//        System.out.println(em.contains(mergeMember));
+
+        em.close();
 
     }
+
+
+
+//    private static void logic(EntityManager entityManager) {
+//
+//        String id = "id1";
+//        Member member = new Member();
+//        member.setId(id);
+//        member.setUsername("선재");
+//        member.setAge(2);
+//
+//        //등록
+//        entityManager.persist(member);
+//
+//        //수정
+//        member.setAge(20);
+//
+//        //한 건 조회
+//        Member findMember = entityManager.find(Member.class, id);
+//        System.out.println("findMember = " + findMember.getUsername()+", age="+findMember.getAge());
+//
+//        //목록 조회
+//        List<Member> members = entityManager.createQuery("select m from Member m", Member.class).getResultList();
+//        System.out.println(members.size());
+//
+//        //삭제
+//        entityManager.remove(member);
+//
+//    }
 
 }
