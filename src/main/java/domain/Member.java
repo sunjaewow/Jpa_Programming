@@ -1,18 +1,15 @@
 package domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "MEMBER")
 @Getter
 @Setter
-@ToString
 public class Member {
 
     @Id
@@ -23,5 +20,18 @@ public class Member {
     private String username;
 
     private Integer age;
+
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
+    @Lob
+    private String description;
+
 
 }
