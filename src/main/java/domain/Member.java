@@ -7,7 +7,10 @@ import lombok.Setter;
 import java.util.Date;
 
 @Entity
-@Table(name = "MEMBER")
+@Table(name = "MEMBER", uniqueConstraints = {@UniqueConstraint(
+        name = "NAME_AGE_UNIQUE",
+        columnNames = {"NAME", "AGE"}
+)})
 @Getter
 @Setter
 public class Member {
@@ -16,7 +19,7 @@ public class Member {
     @Column(name = "ID")
     private String id;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", nullable = false, length = 10)
     private String username;
 
     private Integer age;

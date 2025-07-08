@@ -2,6 +2,7 @@
 <persistence xmlns="https://jakarta.ee/xml/ns/persistence" version="3.0">
     <persistence-unit name="jpabook">
         <class>domain.Member</class>
+        <class>domain.Board</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/jpa_programming" />
@@ -9,8 +10,9 @@
             <property name="jakarta.persistence.jdbc.password" value="fpdlswj365" />
 
             <!-- Hibernate 설정 -->
+            <property name="hibernate.id.new_generator_mappings" value="true"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect" />
-            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.hbm2ddl.auto" value="create" />
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />
         </properties>

@@ -1,5 +1,6 @@
 package com.example.jpaprogramming;
 
+import domain.Board;
 import domain.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -17,11 +18,21 @@ public class JpaProgrammingApplication {
 
     public static void main(String[] args) {
 
-        Member member = createMember("memberA", "회원1");
+        Board board = new Board();
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        em.persist(board);
+        System.out.println(board.getId());
+        tx.commit();
+        em.close();
 
-        member.setUsername("회원명변경"); //준영속 상태일 때 변경
 
-        mergeMember(member);
+//        Member member = createMember("memberA", "회원1");
+
+//        member.setUsername("회원명변경"); //준영속 상태일 때 변경
+
+//        mergeMember(member);
     }
 
     private static Member createMember(String id, String username) {
