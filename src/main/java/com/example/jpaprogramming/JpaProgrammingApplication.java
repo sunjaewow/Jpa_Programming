@@ -2,6 +2,8 @@ package com.example.jpaprogramming;
 
 import domain.Board;
 import domain.Member;
+import domain.Member1;
+import domain.Team;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
@@ -18,21 +20,27 @@ public class JpaProgrammingApplication {
 
     public static void main(String[] args) {
 
-        Board board = new Board();
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
+
         tx.begin();
-        em.persist(board);
-        System.out.println(board.getId());
+        Team team = new Team("team1", "팀1");
+
+        em.persist(team);
+
+        Member1 member1 = new Member1("member1", "회원1");
+        member1.setTeam(team);
+        em.persist(member1);
+
+        Member1 member2 = new Member1("member2", "회원2");
+        member2.setTeam(team);
+        em.persist(member2);
         tx.commit();
-        em.close();
 
 
-//        Member member = createMember("memberA", "회원1");
-
-//        member.setUsername("회원명변경"); //준영속 상태일 때 변경
-
-//        mergeMember(member);
+        Member1 member3 = em.find(Member1.class, "member1");
+        Team team1 = member3.getTeam();
+        System.out.println("team1.get = " + team1.getName());
     }
 
     private static Member createMember(String id, String username) {
