@@ -24,23 +24,12 @@ public class JpaProgrammingApplication {
         EntityTransaction tx = em.getTransaction();
 
         tx.begin();
-        Team team = new Team("team1", "팀1");
+        Team team1 = em.find(Team.class, "team1");
+        List<Member1> member1s = team1.getMember1s();
 
-        em.persist(team);
-
-        Member1 member1 = new Member1("member1", "회원1");
-        member1.setTeam(team);
-        em.persist(member1);
-
-        Member1 member2 = new Member1("member2", "회원2");
-        member2.setTeam(team);
-        em.persist(member2);
-        tx.commit();
-
-
-        Member1 member3 = em.find(Member1.class, "member1");
-        Team team1 = member3.getTeam();
-        System.out.println("team1.get = " + team1.getName());
+        for (Member1 member1 : member1s) {
+            System.out.println(member1.getUsername());
+        }
     }
 
     private static Member createMember(String id, String username) {
