@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "MEMBER", uniqueConstraints = {@UniqueConstraint(
@@ -35,6 +37,12 @@ public class Member {
 
     @Lob
     private String description;
+
+    @ManyToMany
+    @JoinTable(name = "MEMBER_PRODUCT",
+            joinColumns = "ID",
+            inverseJoinColumns = "PRODUCT_ID")
+    private List<Product> products = new ArrayList<>();
 
 
 }
