@@ -18,7 +18,7 @@ import java.util.List;
 public class Member {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "MEMBER_ID")
     private String id;
 
     @Column(name = "NAME", nullable = false, length = 10)
@@ -40,9 +40,14 @@ public class Member {
 
     @ManyToMany
     @JoinTable(name = "MEMBER_PRODUCT",
-            joinColumns = "ID",
-            inverseJoinColumns = "PRODUCT_ID")
+            joinColumns = @JoinColumn(name = "MEMBER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"))
     private List<Product> products = new ArrayList<>();
+
+    public void addProduct(Product product) {
+        products.add(product);
+        product.getMembers().add(this);
+    }
 
 
 }
