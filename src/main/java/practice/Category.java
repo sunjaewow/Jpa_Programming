@@ -25,5 +25,10 @@ public class Category {
 
     private String name;
 
-
+    public void addItem(Item item) {
+        if (item.getCategories() != null) {
+            item.getCategories().add(this);
+        }
+        items.add(item);
+    }
 }
