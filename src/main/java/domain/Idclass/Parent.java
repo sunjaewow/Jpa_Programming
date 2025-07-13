@@ -1,4 +1,4 @@
-package domain;
+package domain.Idclass;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
