@@ -1,4 +1,4 @@
-package domain.Idclass;
+package domain.비식별Idclass;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

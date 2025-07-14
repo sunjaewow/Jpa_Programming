@@ -1,4 +1,4 @@
-package domain.Embedded;
+package domain.비식별Embedded;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Embeddable//좀 더 객체지향 적으로 설계 한 결과 기본생성자는 필수.
-@NoArgsConstructor
+@NoArgsConstructor//hashcode 와 equals는 무조건 재정의해야함.
 public class ParentId1 implements Serializable {
 
     @Column(name = "PARENT_ID1")

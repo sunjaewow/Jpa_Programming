@@ -1,8 +1,7 @@
-package domain.Embedded;
+package domain.비식별Embedded;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 
 @Entity
 public class Parent1 {
