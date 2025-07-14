@@ -1,4 +1,4 @@
-package 식별Idclass;
+package domain.식별Idclass;
 
 import jakarta.persistence.*;
 

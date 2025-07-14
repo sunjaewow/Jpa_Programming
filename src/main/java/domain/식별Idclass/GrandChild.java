@@ -1,6 +1,5 @@
-package 식별Idclass;
+package domain.식별Idclass;
 
-import domain.비식별Idclass.Child;
 import jakarta.persistence.*;
 
 @Entity

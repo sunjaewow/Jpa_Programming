@@ -1,4 +1,4 @@
-package 식별일대일;
+package domain.식별일대일;
 
 import jakarta.persistence.*;
 

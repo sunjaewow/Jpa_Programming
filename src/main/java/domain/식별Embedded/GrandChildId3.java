@@ -1,4 +1,4 @@
-package 식별Embedded;
+package domain.식별Embedded;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
