@@ -34,8 +34,12 @@ public class Member {
     @Column(name = "FOOD_NAME")
     private Set<String> favoriteFoods = new HashSet<>();
 
-    @ElementCollection
-    @CollectionTable(name = "ADDRESS",
-            joinColumns = @JoinColumn(name = "MEMBER4_ID"))
-    private List<Address> addressHistory = new ArrayList<>();
+//    @ElementCollection
+//    @CollectionTable(name = "ADDRESS",
+//            joinColumns = @JoinColumn(name = "MEMBER4_ID"))
+//    private List<Address> addressHistory = new ArrayList<>(); 조회가 빈번하게 일어나는 경우 일대다로 하는게 훨씬 좋음
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "MEMBER4_ID")
+    private List<AddressEntity> addressHistory = new ArrayList<>();
 }
