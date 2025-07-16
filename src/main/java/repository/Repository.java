@@ -3,6 +3,7 @@ package repository;
 import domain.Member;
 import jakarta.persistence.*;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class Repository {
@@ -30,5 +31,22 @@ public class Repository {
             Object[] result = (Object[]) o;//결과가 둘 이상이면 배열을 반환
         }
 
+        List<Object[]> resultList2 = em.createQuery("select m.name, m.id from Member m").getResultList();//엔티티 프로젝션은 반환 타입
+        //확실하지 않아서 Query로 됨.
+
+        for (Object[] o : resultList2) {
+            String name = (String) o[0];
+            Long id = (Long) o[1];
+        }
+
+//        Iterator iterator = resultList2.iterator();
+//        while (iterator.hasNext()) {
+//            Object[] row = (Object[]) iterator.next();
+//            String name = (String) row[0];
+//            Long id = (Long) row[1];
+//        }
+
+        TypedQuery<MemberDto> query = em.createQuery("select repository.MemberDto from Member m", MemberDto.class);
+        query.getResultList();//DTO를 활용한 프로젝션
     }
 }
