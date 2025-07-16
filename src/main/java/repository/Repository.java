@@ -73,5 +73,7 @@ public class Repository {
 
         em.createQuery("select m from Member1 m join fetch m.team");//fetch join 지연 로딩 발생 안함
         //조회된 team 엔티티는 프록시 객체가 아닌 실제 객체임 따라서 준영속 상태가 되어도 팀을 조회할 수 있음.
+
+        em.createQuery("select distinct t from Team t join fetch t.member1s where t.name='팀A'");
     }
 }
