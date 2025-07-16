@@ -1,15 +1,15 @@
 package repository;
 
 import domain.Member;
+import domain.Member1;
 import jakarta.persistence.*;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class Repository {
+    EntityManagerFactory hi = Persistence.createEntityManagerFactory("hi");//파라미터 바인딩
+    EntityManager em = hi.createEntityManager();
     public void main1() {
-        EntityManagerFactory hi = Persistence.createEntityManagerFactory("hi");//파라미터 바인딩
-        EntityManager em = hi.createEntityManager();
 
         List<Member> resultList = em.createQuery("select m from Member m where m.name=:name", Member.class)
                 .setParameter("name", "User1")
@@ -48,5 +48,29 @@ public class Repository {
 
         TypedQuery<MemberDto> query = em.createQuery("select repository.MemberDto from Member m", MemberDto.class);
         query.getResultList();//DTO를 활용한 프로젝션
+
+        TypedQuery<Member> query2 = em.createQuery("select m from Member m order by m.name desc ", Member.class);
+        query2.setFirstResult(10);//11번째부터
+        query2.setMaxResults(20);//20개를 추출
+        query2.getResultList();
+
+    }
+
+    public void join() {//내부 조인
+        String teamName = "팀A";
+        List<Member1> result = em.createQuery("select m from Member1 m inner join m.team t where t.name=:teamName", Member1.class)
+                .setParameter("teamName", teamName)
+                .getResultList();
+
+        em.createQuery("select m from Member1 m left join m.team t where t.name=:teamName", Member1.class)//외부 조인
+                .setParameter("teamName", teamName)
+                .getResultList();
+
+        em.createQuery("select  count(m) from Member1 m, m.team t where m.username=t.name");//세타조인
+        //전혀 관련없는 username과 name을 조인한다.
+
+        em.createQuery("select m,t from Member1 m left join m.team t on t.name='A'");//join on
+
+
     }
 }
