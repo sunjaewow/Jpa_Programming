@@ -11,7 +11,7 @@ public class Repository {
     EntityManager em = hi.createEntityManager();
     public void main1() {
 
-        List<Member> resultList = em.createQuery("select m from Member m where m.name=:name", Member.class)
+        List<Member> resultList = em.createQuery("select m from Member m where m.username=:name", Member.class)
                 .setParameter("name", "User1")
                 .getResultList();//한번에 가능
 //        query.setParameter("name", "User1");
@@ -20,18 +20,18 @@ public class Repository {
             System.out.println("member="+member);
         }
 
-        em.createQuery("select m from Member m where m.name=?1", Member.class)//위치 기준 파라미터
+        em.createQuery("select m from Member m where m.username=?1", Member.class)//위치 기준 파라미터
                 .setParameter(1, "User")
                 .getResultList();
         //파라미터 바인딩 형식을 적극 추천함 쿼리의 파싱 결과를 재사용할 수 있기 때문에 성능 향상이됨.
 
-        Query query1 = em.createQuery("select m.name from Member m");//반환타입이 명확하지 않은 경우 Query 명확하면 TypeQuery
+        Query query1 = em.createQuery("select m.username from Member m");//반환타입이 명확하지 않은 경우 Query 명확하면 TypeQuery
         List resultList1 = query1.getResultList();
         for (Object o : resultList1) {
             Object[] result = (Object[]) o;//결과가 둘 이상이면 배열을 반환
         }
 
-        List<Object[]> resultList2 = em.createQuery("select m.name, m.id from Member m").getResultList();//엔티티 프로젝션은 반환 타입
+        List<Object[]> resultList2 = em.createQuery("select m.username, m.id from Member m").getResultList();//엔티티 프로젝션은 반환 타입
         //확실하지 않아서 Query로 됨.
 
         for (Object[] o : resultList2) {
@@ -49,7 +49,7 @@ public class Repository {
         TypedQuery<MemberDto> query = em.createQuery("select repository.MemberDto from Member m", MemberDto.class);
         query.getResultList();//DTO를 활용한 프로젝션
 
-        TypedQuery<Member> query2 = em.createQuery("select m from Member m order by m.name desc ", Member.class);
+        TypedQuery<Member> query2 = em.createQuery("select m from Member m order by m.username desc ", Member.class);
         query2.setFirstResult(10);//11번째부터
         query2.setMaxResults(20);//20개를 추출
         query2.getResultList();
@@ -75,5 +75,17 @@ public class Repository {
         //조회된 team 엔티티는 프록시 객체가 아닌 실제 객체임 따라서 준영속 상태가 되어도 팀을 조회할 수 있음.
 
         em.createQuery("select distinct t from Team t join fetch t.member1s where t.name='팀A'");
+
+        em.createQuery("select m.username from Team t join t.member1s m ");
+
+        em.createQuery("select count(t.member1s) from Team t");
+
+        em.createQuery("select t.member1s.size from Team t");
+
+        em.createQuery("select m from Member m where m.age> (select avg(m2.age) from Member m2)");
+
+        em.createQuery("select m from Member m where (select count(o) from Order o where m=o.member)>0");
+
+//        em.createQuery("select m from Member m where m.orders.size");
     }
 }
