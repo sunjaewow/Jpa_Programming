@@ -87,5 +87,12 @@ public class Repository {
         em.createQuery("select m from Member m where (select count(o) from Order o where m=o.member)>0");
 
 //        em.createQuery("select m from Member m where m.orders.size");
+
+        em.createQuery("select m from Member1 m where exists (select t from m.team t where t.name='팀A')");
+
+        em.createQuery("select m from Member1 m where m.team=any (select t from Team t)");
+
+        em.createQuery("select t from Team t where t in (select t2 from Team t2 join t2.member1s m2 where m2.username='a')");
+
     }
 }
