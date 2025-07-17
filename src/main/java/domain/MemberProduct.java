@@ -1,7 +1,7 @@
 package domain;
 
 import jakarta.persistence.*;
-import practice.Member;
+import practice.Member8;
 
 @Entity
 //@IdClass(MemberProductId.class)//복합 키를 사용하려면 식별자 클래스가 필요함.
@@ -14,7 +14,7 @@ public class MemberProduct {
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
-    private Member member;
+    private Member8 member8;
 
     @ManyToOne
     @JoinColumn(name = "PRODUCT_ID")

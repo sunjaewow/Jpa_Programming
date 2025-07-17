@@ -21,7 +21,7 @@ public class Order extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
-    private Member member;
+    private Member8 member8;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
@@ -37,11 +37,11 @@ public class Order extends BaseEntity{
     private Delivery delivery;
 
     //연관관계 메소드
-    public void setMember(Member member) {
-        if (this.member!=null)
-            member.getOrders().remove(this);
-        this.member = member;
-        member.getOrders().add(this);
+    public void setMember8(Member8 member8) {
+        if (this.member8 !=null)
+            member8.getOrders().remove(this);
+        this.member8 = member8;
+        member8.getOrders().add(this);
     }
 
     public void addOrderItem(OrderItem orderItem) {

@@ -6,6 +6,7 @@
         <class>domain.Member1</class>
         <class>domain.Team</class>
         <class>domain.Product</class>
+        <class>practice.Member8</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/jpa_programming" />

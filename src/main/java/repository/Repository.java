@@ -3,6 +3,7 @@ package repository;
 import domain.Member;
 import domain.Member1;
 import jakarta.persistence.*;
+import practice.Member8;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class Repository {
     EntityManager em = hi.createEntityManager();
     public void main1() {
 
-        List<Member> resultList = em.createQuery("select m from Member m where m.username=:name", Member.class)
+        List<Member> resultList = em.createQuery("select m from Member8 m where m.username=:name", Member.class)
                 .setParameter("name", "User1")
                 .getResultList();//한번에 가능
 //        query.setParameter("name", "User1");
@@ -84,7 +85,7 @@ public class Repository {
 
         em.createQuery("select m from Member m where m.age> (select avg(m2.age) from Member m2)");
 
-        em.createQuery("select m from Member m where (select count(o) from Order o where m=o.member)>0");
+        em.createQuery("select m from Member m where (select count(o) from Order o where m=o.member8)>0");
 
 //        em.createQuery("select m from Member m where m.orders.size");
 
@@ -108,5 +109,11 @@ public class Repository {
 
         em.createQuery("select year(current timestamp ), month (current timestamp ), day (current timestamp )from Member ");
 
+        em.createQuery("select case when m.age <=10 then '학생요금' else '일반요금' end " +
+                "from Member m");
+
+        em.createQuery("select i from Item i");
+
+        TypedQuery<Member8> z = em.createNamedQuery("Member.findByName", Member8.class);
     }
 }
