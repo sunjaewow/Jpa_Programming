@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="https://jakarta.ee/xml/ns/persistence" version="3.0">
     <persistence-unit name="jpabook">
+        <mapping-file>META-INF/ormMember.xml</mapping-file>
         <class>domain.Member</class>
         <class>domain.Board</class>
         <class>domain.Member1</class>
