@@ -93,6 +93,20 @@ public class Repository {
         em.createQuery("select m from Member1 m where m.team=any (select t from Team t)");
 
         em.createQuery("select t from Team t where t in (select t2 from Team t2 join t2.member1s m2 where m2.username='a')");
+    }
+
+    public void training() {
+        em.createQuery("select m from Member m where m.age between 10 and 20");
+
+        em.createQuery("select m from Member m where m.username in ('a', 'b')");
+
+        em.createQuery("select m from Member m where m.username like '%원%'");
+
+//        em.createQuery("select m from Member m where m.orders is not empty ");//주문이 하나라도 있는 회원 조회
+
+        em.createQuery("select t from Team t where :memberParam member of t.member1s").setParameter("memberParam", 'a');
+
+        em.createQuery("select year(current timestamp ), month (current timestamp ), day (current timestamp )from Member ");
 
     }
 }
