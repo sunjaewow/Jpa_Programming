@@ -1,8 +1,11 @@
 package repository;
 
+import com.querydsl.jpa.impl.JPAQuery;
 import domain.Member;
 import domain.Member1;
+import domain.QMember;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import practice.Member8;
 
 import java.util.List;
@@ -10,9 +13,10 @@ import java.util.List;
 public class Repository {
     EntityManagerFactory hi = Persistence.createEntityManagerFactory("hi");//파라미터 바인딩
     EntityManager em = hi.createEntityManager();
+
     public void main1() {
 
-        List<Member> resultList = em.createQuery("select m from Member8 m where m.username=:name", Member.class)
+        List<Member> resultList = em.createQuery("select m from Member8 m where m.name=:name", Member.class)
                 .setParameter("name", "User1")
                 .getResultList();//한번에 가능
 //        query.setParameter("name", "User1");
@@ -115,5 +119,19 @@ public class Repository {
         em.createQuery("select i from Item i");
 
         TypedQuery<Member8> z = em.createNamedQuery("Member.findByName", Member8.class);
+
     }
+
+    public void queryDSL() {
+        JPAQuery<Member> query = new JPAQuery<>(em);
+        QMember qMember = new QMember("m");
+        List<Member> members = query
+                .from(qMember)
+                .where(qMember.username.eq("회원1"))
+                .orderBy(qMember.username.desc())
+                .fetch();
+
+
+    }
+
 }

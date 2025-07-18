@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-public class Member {
+public class Member3 {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
