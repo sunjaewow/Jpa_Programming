@@ -1,12 +1,15 @@
 package repository;
 
 import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import domain.Member;
 import domain.Member1;
 import domain.QMember;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import practice.Member8;
+import practice.item.Item;
+import practice.item.QItem;
 
 import java.util.List;
 
@@ -123,14 +126,21 @@ public class Repository {
     }
 
     public void queryDSL() {
-        JPAQuery<Member> query = new JPAQuery<>(em);
-        QMember qMember = new QMember("m");
-        List<Member> members = query
-                .from(qMember)
-                .where(qMember.username.eq("회원1"))
-                .orderBy(qMember.username.desc())
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+//        JPAQuery<Object> query = new JPAQuery<>(em);
+//        QMember qMember = new QMember("m");
+        QMember member = QMember.member;
+
+        List<Member> members = queryFactory
+                .selectFrom(member)
+                .where(member.username.eq("회원1"))
+                .orderBy(member.username.desc())
                 .fetch();
 
+        QItem item = QItem.item;
+        List<Item> list = queryFactory.selectFrom(item)
+                .where(item.name.eq("좋은 상품").and(item.price.gt(30000)))
+                .fetch();
 
     }
 
