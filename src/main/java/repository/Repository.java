@@ -142,6 +142,7 @@ public class Repository {
                 .where(item.name.eq("좋은 상품").and(item.price.gt(30000)))
                 .fetch();
 
+        queryFactory.selectFrom()
 
     }
 
