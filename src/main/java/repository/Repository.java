@@ -6,6 +6,9 @@ import domain.Member1;
 import domain.QMember;
 import jakarta.persistence.*;
 import practice.Member8;
+import practice.QMember8;
+import practice.QOrder;
+import practice.QOrderItem;
 import practice.item.Item;
 import practice.item.QItem;
 
@@ -146,6 +149,36 @@ public class Repository {
                 .offset(10).limit(20)
                 .fetch();
 
+        queryFactory.selectFrom(item)
+                .groupBy(item.price)
+                .having(item.price.gt(10000))
+                .fetch();
+
+        QOrder order = QOrder.order;
+
+        QMember8 member8 = QMember8.member8;
+
+        QOrderItem orderItem = QOrderItem.orderItem;
+
+        queryFactory.selectFrom(order)
+                .join(order.member8, member8)
+                .leftJoin(order.orderItems, orderItem)
+                .fetch();
+
+        queryFactory.selectFrom(order)
+                .leftJoin(order.orderItems, orderItem)
+                .on(orderItem.count.gt(2))
+                .fetch();
+
+        queryFactory.selectFrom(order)
+                .innerJoin(order.member8, member8).fetchJoin()
+                .leftJoin(order.orderItems, orderItem).fetchJoin()//fetch
+                .fetch();
+
+        queryFactory.select(order, member8)
+                .from(order)
+                .where(order.member8.eq(member8))
+                .fetch()
     }
 
 }
