@@ -232,7 +232,19 @@ public class Repository {
         List<Item> fetch1 = queryFactory.selectFrom(item)
                 .where(builder)
                 .fetch();
+    }
 
+    public void nativeQuery() {
+        String sql = "select id, age, name " +
+                "from member where age>?";
+
+        Query nativeQuery = em.createNativeQuery(sql, Member.class)
+                .setParameter(1, 20);
+
+        @SuppressWarnings("unchecked")//자바 컴파일러는 제네릭 타입을 명확히 확인할 수 없는 형변환에 대해 경고를 띄움
+                //이런 경우 내가 타입을 안전하게 알고잇으니 경고 무시해도 돼 라고 하는것임.
+        List<Member> members = nativeQuery.getResultList();
+        
     }
 
 }
