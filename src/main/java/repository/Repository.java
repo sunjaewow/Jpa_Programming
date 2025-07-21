@@ -1,12 +1,10 @@
 package repository;
 
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import domain.Member;
 import domain.Member1;
 import domain.QMember;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import practice.Member8;
 import practice.item.Item;
 import practice.item.QItem;
@@ -142,7 +140,11 @@ public class Repository {
                 .where(item.name.eq("좋은 상품").and(item.price.gt(30000)))
                 .fetch();
 
-        queryFactory.selectFrom()
+        List<Item> list1 = queryFactory.selectFrom(item)
+                .where(item.price.gt(20000))
+                .orderBy(item.price.desc(), item.stockQuantity.asc())
+                .offset(10).limit(20)
+                .fetch();
 
     }
 
