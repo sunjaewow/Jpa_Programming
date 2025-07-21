@@ -1,9 +1,12 @@
 package repository;
 
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import domain.Member;
 import domain.Member1;
 import domain.QMember;
+import dto.ItemDTO;
 import jakarta.persistence.*;
 import practice.Member8;
 import practice.QMember8;
@@ -178,7 +181,27 @@ public class Repository {
         queryFactory.select(order, member8)
                 .from(order)
                 .where(order.member8.eq(member8))
-                .fetch()
+                .fetch();
+
+
+        List<String> na = queryFactory.select(item.name)//프로젝션
+                .from(item)
+                .fetch();
+
+        List<com.querydsl.core.Tuple> fetch = queryFactory.select(item.name, item.price)//여러 컬럼 반환과 튜플
+                .from(item)
+                .fetch();
+
+        for (com.querydsl.core.Tuple tuple : fetch) {
+            System.out.println("name="+tuple.get(item.name));
+            System.out.println("price="+tuple.get(item.price));
+        }
+
+        queryFactory.select(Projections.constructor(ItemDTO.class, item.name, item.price))
+                .from(item)
+                .fetch();//DTO 프로젝션
+
+
     }
 
 }
