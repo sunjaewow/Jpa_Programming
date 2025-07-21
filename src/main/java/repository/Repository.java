@@ -1,13 +1,18 @@
 package repository;
 
+import ch.qos.logback.core.util.StringUtil;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import domain.Member;
 import domain.Member1;
 import domain.QMember;
 import dto.ItemDTO;
 import jakarta.persistence.*;
+import org.springframework.util.StringUtils;
 import practice.Member8;
 import practice.QMember8;
 import practice.QOrder;
@@ -201,6 +206,32 @@ public class Repository {
                 .from(item)
                 .fetch();//DTO 프로젝션
 
+        JPAUpdateClause updateClause = new JPAUpdateClause(em, item);
+
+        updateClause.where(item.name.eq("시골개발자의 JPA 책"))
+                .set(item.price, item.price.add(100))
+                .execute();//배치 쿼리는 영속성 컨텍스트를 무시하고 데이터베이스를 직접 쿼리한다는 점.
+
+        JPADeleteClause deleteClause = new JPADeleteClause(em, item);
+        deleteClause.where(item.name.eq("시골개발자의 JPA 책"))
+                .execute();
+
+        ItemDTO itemDTO = new ItemDTO();
+        itemDTO.setUsername("시골개발자");
+        itemDTO.setPrice(10000);
+
+        BooleanBuilder builder = new BooleanBuilder();
+        if (StringUtils.hasText(itemDTO.getUsername())) {
+            builder.and(item.name.contains(itemDTO.getUsername()));
+        }
+
+        if (itemDTO.getPrice() != null) {
+            builder.and(item.price.gt(itemDTO.getPrice()));
+        }
+
+        List<Item> fetch1 = queryFactory.selectFrom(item)
+                .where(builder)
+                .fetch();
 
     }
 

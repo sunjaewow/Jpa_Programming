@@ -13,5 +13,5 @@ public class ItemDTO {
 
     private String username;
 
-    private int price;
+    private Integer price;
 }
