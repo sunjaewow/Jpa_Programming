@@ -1,10 +1,8 @@
 package repository;
 
-import ch.qos.logback.core.util.StringUtil;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPADeleteClause;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import domain.Member;
@@ -280,6 +278,11 @@ public class Repository {
         //문제점 처음 상품을 조회하고 영속성 컨텍스트에 저장 이후 벌크연산으로 수정을 하면 영속성 컨텍스트는 무시하고 데이터베이스에 직접 쿼리
         //그 결과 조회를 해도 수정 전 가격이 출력이됨. 문제점.
         //---------------------------------------------------------------------------------------------------------------------
+        //해결방법
+        em.refresh(productA);//데이터베이스에서 상품A를 다시 조회한다.
+        //벌크 연산을 먼저 실행하던가 연산 수행 후 영속성 컨텍스트 초기화를 함으로써 문제 해결가능
+        //---------------------------------------------------------------------------------------------------------------------
+        
     }
 
 }
