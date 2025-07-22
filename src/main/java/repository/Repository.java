@@ -9,6 +9,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import domain.Member;
 import domain.Member1;
+import domain.Product;
 import domain.QMember;
 import dto.ItemDTO;
 import jakarta.persistence.*;
@@ -263,7 +264,22 @@ public class Repository {
         em.createQuery(qlString2)
                 .setParameter("price", 100)
                 .executeUpdate();//벌크 연산은 영속성 컨텍스트를 무시하고 데이터베이스에 직접 쿼리한다는 점에 주의해야함.
+        //---------------------------------------------------------------------------------------------------------------------
 
+        Product productA = em.createQuery("select p from Product p where p.name=:name", Product.class)
+                .setParameter("name", "productA")
+                .getSingleResult();
+
+        System.out.println("productA 수정 전 = " + productA.getPrice());
+
+        em.createQuery("update Product p set p.price=p.price*1.1")
+                .executeUpdate();
+
+        System.out.println("productA 수정 후 = "+productA.getPrice());
+
+        //문제점 처음 상품을 조회하고 영속성 컨텍스트에 저장 이후 벌크연산으로 수정을 하면 영속성 컨텍스트는 무시하고 데이터베이스에 직접 쿼리
+        //그 결과 조회를 해도 수정 전 가격이 출력이됨. 문제점.
+        //---------------------------------------------------------------------------------------------------------------------
     }
 
 }

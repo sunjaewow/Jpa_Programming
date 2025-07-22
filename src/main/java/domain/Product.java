@@ -17,6 +17,10 @@ public class Product {
 
     private String name;
 
+    private int price;
+
+    private int stockAmount;
+
     @ManyToMany(mappedBy = "products")
     private List<Member> members;
 }
