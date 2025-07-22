@@ -247,4 +247,23 @@ public class Repository {
         
     }
 
+    public void bulk() {
+        String qlString = "update Product p " +
+                "set p.price =p.price*1.1 " +
+                "where p.stockAmount < :stockAmount";
+
+        em.createQuery(qlString)
+                .setParameter("stockAmount", 10)
+                .executeUpdate();//벌크 연선
+        //수백개 이상의 엔티티를 하나씩 처리하기에는 시간이 너무 오래 걸린다. 이럴 때 여러 건을 한 번에 수정하거나 삭제하는 벌크 연산을 사용하면 된다.
+
+        String qlString2 = "delete from Product p " +
+                "where p.price< :price";
+
+        em.createQuery(qlString2)
+                .setParameter("price", 100)
+                .executeUpdate();//벌크 연산은 영속성 컨텍스트를 무시하고 데이터베이스에 직접 쿼리한다는 점에 주의해야함.
+
+    }
+
 }
