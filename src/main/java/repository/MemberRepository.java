@@ -1,12 +1,14 @@
 package repository;
 
 import domain.Member;
+import jakarta.persistence.QueryHint;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import practice.Member8;
@@ -35,5 +37,8 @@ public interface MemberRepository extends JpaRepository<Member8, Long> {
 
     List<Member8> findByName(String name, Sort sort);
 
+    @QueryHints(value = {
+            @QueryHint(name = "org.hibernate.readOnly", value = "true")
+    }, forCounting = true)//QueryHint
     Page<Member8> findByNameStartingWith(String name, Pageable pageable);
 }
