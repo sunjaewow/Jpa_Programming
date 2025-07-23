@@ -20,6 +20,8 @@ public class Member8 extends  BaseEntity{
     @Column(name = "MEMBER1_ID")
     private Long id;
 
+    private String email;
+
     private String name;
 
     @Embedded
