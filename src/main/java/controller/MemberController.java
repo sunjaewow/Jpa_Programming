@@ -1,12 +1,18 @@
 package controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import practice.Member8;
 import repository.MemberRepository;
+import service.MemberService;
 
 import java.util.Optional;
 
@@ -15,6 +21,7 @@ import java.util.Optional;
 public class MemberController {
 
     private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     @RequestMapping("member/")
     public String memberUpdateForm(@RequestParam("id") Long id, Model model) {
@@ -32,5 +39,20 @@ public class MemberController {
         return "Member";
     }
 
+    //members?page=0&size=20&sort=name, desc&sort=address.city
+    @GetMapping("/members")//HandlerMethodArgumentResolver
+    public String list(Pageable pageable, Model model) {//Pageable은 인터페이스 실제로는 PageRequest가 만들어짐.
+        Page<Member8> page = memberService.findMembers(pageable);
+        model.addAttribute("members", page.getContent());
+        return "members";
+    }
+
+    @GetMapping("/members")//Pageable의 기본값은 page=0, size=20이다.
+    //변경 하고싶으면 @PageableDefault를 설정하면 된다.
+    public String list1(@PageableDefault(size = 12, sort="name", direction = Sort.Direction.DESC) Pageable pageable, Model model, Sort sort) {
+        Page<Member8> page = memberService.findMembers(pageable);
+        model.addAttribute("members", page.getContent());
+        return "members";
+    }
 
 }
